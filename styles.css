@@ -1,0 +1,732 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.container {
+    padding: 1.25rem;
+    position: relative;
+    margin-right: 240px;
+    max-width: calc(1400px - 240px);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.results {
+    display: none;
+}
+
+.result-box {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: white;
+    border-radius: 8px;
+    min-width: fit-content;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.result-item span:first-child {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.result-item span:last-child {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+.semester-results {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    margin-top: 1rem;
+}
+
+.semester-results .result-item {
+    background: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    min-width: fit-content;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    transition: transform 0.2s, box-shadow 0.2s;
+    flex: 1;
+    text-align: center;
+}
+
+.semester-results .result-item span:first-child {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.semester-results .result-item span:last-child {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1rem;
+    display: block;
+}
+
+.semester-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    justify-content: center;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #3498db #f8f9fa;
+}
+
+/* Custom scrollbar for webkit browsers */
+.semester-tabs::-webkit-scrollbar {
+    height: 6px;
+}
+
+.semester-tabs::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 3px;
+}
+
+.semester-tabs::-webkit-scrollbar-thumb {
+    background-color: #3498db;
+    border-radius: 3px;
+}
+
+.tab-button {
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background: #f8f9fa;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    min-width: fit-content;
+}
+
+.tab-button .progress-count {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.tab-button:hover .progress-count {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.tab-button.active .progress-count {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.tab-button:hover {
+    background: #e9ecef;
+}
+
+.tab-button.active {
+    background: #3498db;
+    color: white;
+}
+
+.courses-list {
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+th {
+    background: #4a90e2;
+    color: white;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 500;
+}
+
+td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Add alternating row colors */
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tr:nth-child(odd) {
+    background-color: white;
+}
+
+/* Remove general hover effect */
+tr:hover {
+    background-color: inherit;
+}
+
+/* Add hover effect only when select is focused */
+tr:has(select:focus) {
+    background-color: #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+/* Style for the active semester rows */
+tr[style*="display: none"] {
+    display: none !important;
+}
+
+td:first-child {
+    width: 60%;
+}
+
+td:nth-child(2) {
+    width: 15%;
+    text-align: center;
+}
+
+td:last-child {
+    width: 25%;
+}
+
+select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+select:hover {
+    border-color: #4a90e2;
+}
+
+select:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+/* Add floating HUD */
+.floating-hud {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 250px;
+    height: 100vh;
+    background: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 1000;
+}
+
+.hud-section {
+    margin-bottom: 1.5rem;
+}
+
+.hud-section:last-child {
+    margin-bottom: 0;
+}
+
+.hud-title {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hud-value {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.hud-percentage {
+    font-size: 1rem;
+    color: #666;
+}
+
+.semester-gpa-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.semester-gpa-item {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(74, 144, 226, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.semester-gpa-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.semester-gpa-item span:first-child {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.35rem;
+}
+
+.semester-gpa-item span:last-child {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.reset-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.reset-button:hover {
+    background-color: #c82333;
+    transform: rotate(180deg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reset-button:active {
+    transform: rotate(180deg) scale(0.95);
+    box-shadow: none;
+}
+
+/* Mobile Responsiveness Improvements */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+        background: #f5f7fa;
+    }
+
+    .container {
+        margin: 0;
+        padding: 0;
+        max-width: 100%;
+        background: white;
+        min-height: 100vh;
+    }
+
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: white;
+        padding: 1rem;
+        margin: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+        font-size: 1.2rem;
+        line-height: 1.4;
+        margin: 0;
+        color: #2c3e50;
+    }
+
+    .subtitle {
+        font-size: 0.85rem;
+        margin: 0.5rem 0 0 0;
+        color: #666;
+    }
+
+    /* Floating HUD improvements */
+    .floating-hud {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: auto;
+        padding: 1rem;
+        background: white;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        border-top: 1px solid #eee;
+    }
+
+    .hud-section {
+        margin-bottom: 1rem;
+    }
+
+    .hud-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .hud-title {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .hud-value {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.25rem;
+    }
+
+    .hud-percentage {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .semester-gpa-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+        padding: 0.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .semester-gpa-item {
+        background: white;
+        padding: 0.75rem 0.5rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .semester-gpa-item span:first-child {
+        display: block;
+        font-size: 0.7rem;
+        color: #666;
+        margin-bottom: 0.25rem;
+    }
+
+    .semester-gpa-item span:last-child {
+        display: block;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    /* Semester tabs improvements */
+    .semester-tabs {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        background: white;
+        padding: 0.75rem;
+        margin: 0;
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-button {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        color: #495057;
+        font-weight: 500;
+        white-space: nowrap;
+        scroll-snap-align: start;
+        transition: all 0.2s ease;
+    }
+
+    .tab-button.active {
+        background: #4a90e2;
+        color: white;
+        border-color: #4a90e2;
+        transform: scale(1.05);
+    }
+
+    /* Courses list improvements */
+    .courses-list {
+        margin: 0;
+        padding: 1rem;
+        background: white;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    th {
+        position: sticky;
+        top: 0;
+        background: #4a90e2;
+        color: white;
+        padding: 1rem;
+        font-weight: 500;
+        text-align: left;
+        font-size: 0.9rem;
+    }
+
+    td {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        font-size: 0.9rem;
+    }
+
+    td:first-child {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    /* Select improvements */
+    select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        background: white;
+        font-size: 0.9rem;
+        color: #2c3e50;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%232c3e50' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 12px;
+    }
+
+    select:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        outline: none;
+    }
+
+    /* Reset button improvements */
+    .reset-button {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 50%;
+        background: #dc3545;
+        color: white;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        transition: all 0.2s ease;
+    }
+
+    .reset-button:active {
+        transform: scale(0.95);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Additional breakpoint for very small devices */
+@media (max-width: 480px) {
+    header {
+        padding: 0.75rem;
+    }
+
+    h1 {
+        font-size: 1.1rem;
+    }
+
+    .subtitle {
+        font-size: 0.8rem;
+    }
+
+    .semester-gpa-grid {
+        gap: 0.35rem;
+    }
+
+    .semester-gpa-item {
+        padding: 0.5rem 0.35rem;
+    }
+
+    .semester-gpa-item span:first-child {
+        font-size: 0.65rem;
+    }
+
+    .semester-gpa-item span:last-child {
+        font-size: 0.85rem;
+    }
+
+    .tab-button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    th, td {
+        padding: 0.75rem;
+    }
+
+    select {
+        padding: 0.6rem;
+    }
+}
+
+/* Add smooth scrolling for better mobile experience */
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* Improve touch targets */
+button, select, .tab-button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Add pull-to-refresh visual feedback */
+body {
+    overscroll-behavior-y: contain;
+}
+
+/* Improve scrolling performance */
+* {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile Warning Overlay */
+.mobile-warning {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    z-index: 9999;
+    padding: 2rem;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.mobile-warning-content {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
+    width: 400px;
+}
+
+.mobile-warning-icon {
+    font-size: 3.5rem;
+    color: #4a90e2;
+    margin-bottom: 1.5rem;
+}
+
+.mobile-warning h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.mobile-warning p {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .mobile-warning {
+        display: flex;
+    }
+
+    .container {
+        display: none;
+    }
+} 
